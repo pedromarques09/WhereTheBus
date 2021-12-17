@@ -18,25 +18,16 @@ export const Content = styled.View`
 export const Header = styled.View`
   width: 100%;
   flex-direction: row;
+  margin-bottom: 60px;
 `;
 
 export const Title = styled.Text`
-  margin-top: 20px;
-  margin-left: -8px;
   font-size: 32px;
   font-weight: bold;
   font-family: Tahoma;
   color: #283673;
   text-align: justify;
-`;
-
-export const ContentInput = styled.View`
-  margin: 15px;
-  padding: 10px;
-  width: 100%;
-  flex-direction: row;
-  align-items: flex-end;
-  justify-content: flex-end;
+  margin-top: 40px;
 `;
 
 export const ContentFlatList = styled.TouchableOpacity`

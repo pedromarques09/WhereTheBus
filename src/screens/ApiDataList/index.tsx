@@ -3,7 +3,6 @@ import {FlatList} from 'react-native';
 
 import Input from '../../components/Input';
 import ButtonBack from '../../components/ButtonBack';
-import ModalRoute from '../../components/ ModalRoute';
 
 import {
   Container,
@@ -15,32 +14,33 @@ import {
   Header,
 } from './styles';
 
-const BusLine = () => {
-  const [lineBus, setLineBus] = useState<any>([]);
-  const [originalLineBus, setOriginalLineBus] = useState<any>([]);
-  const [visible, setVisible] = useState<Boolean>(false);
-  const [modalName, setModalName] = useState();
+import {useNavigation, useRoute} from '@react-navigation/native';
+
+const ApiDataList = () => {
+  const {
+    params: {url, title},
+  } = useRoute();
+  const [data, SetData] = useState<any>([]);
+  const [originalData, SetOriginalData] = useState<any>([]);
+  const navigation = useNavigation();
 
   useEffect(() => {
-    fetch(
-      'http://www.poatransporte.com.br/php/facades/process.php?a=nc&p=%25&t=o',
-      {
-        method: 'GET',
-        headers: {
-          Accept: 'application/json',
-        },
+    fetch(url, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
       },
-    )
+    })
       .then(response => response.json())
       .then(data => {
-        setOriginalLineBus(data);
-        setLineBus(data);
+        SetOriginalData(data);
+        SetData(data);
       });
   }, []);
 
   function Search(text: any) {
-    let arr = JSON.parse(JSON.stringify(originalLineBus));
-    setLineBus(
+    let arr = JSON.parse(JSON.stringify(originalData));
+    SetData(
       arr.filter(
         (list: any) =>
           list.nome.toLowerCase().includes(text.toLowerCase()) ||
@@ -49,18 +49,11 @@ const BusLine = () => {
     );
   }
 
-  // function AbrirModal(name: any) {
-  //   setVisible(true);
-  //   console.log(visible);
-  //   return;
-  // }
-
   function LineShow(item: any) {
     return (
       <ContentFlatList
         onPress={() => {
-          setVisible(true);
-          setModalName(item.nome);
+          navigation.navigate('LotacaoTracking', {id: item.id});
         }}>
         <TextInfo>{item.nome}</TextInfo>
         <TextInfo>Codigo = {item.codigo}</TextInfo>
@@ -73,31 +66,24 @@ const BusLine = () => {
       <Content>
         <Header>
           <ButtonBack />
-          <Title> Linhas de Ônibus </Title>
+          <Title> {title} </Title>
         </Header>
         <ContentInput>
           <Input
             placeholder="Nome ou Codigo da Linha"
-            value={lineBus}
-            onChangeText={(text: any) => Search(text.toLowerCase())}
+            value={data}
+            onChangeText={(text: any) => Search(text)}
           />
         </ContentInput>
         <FlatList
-          data={lineBus}
+          data={data}
           keyExtractor={item => item.id}
           contentContainerStyle={{flexGrow: 1}}
           renderItem={({item}) => LineShow(item)}
         />
-        {visible === true ? (
-          <ModalRoute
-            visible={visible}
-            setVisible={setVisible}
-            name={modalName}
-          />
-        ) : null}
       </Content>
     </Container>
   );
 };
 
-export default BusLine;
+export default ApiDataList;

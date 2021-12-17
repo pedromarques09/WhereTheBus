@@ -1,6 +1,6 @@
 import {useNavigation} from '@react-navigation/core';
 import React from 'react';
-import {Image, Text} from 'react-native';
+import {Image} from 'react-native';
 import ButtonHome from '../../components/ButtonHome';
 import {Container, ContentButton} from './styles';
 
@@ -14,11 +14,25 @@ const Home = () => {
       />
       <ContentButton>
         <ButtonHome
-          onPress={() => navigation.navigate('BusLine')}
+          onPress={() =>
+            navigation.navigate('ApiDataList', {
+              url: [
+                'http://www.poatransporte.com.br/php/facades/process.php?a=nc&p=%25&t=o',
+              ],
+              title: ['Linhas de Ônibus'],
+            })
+          }
           title={'Linhas De Ônibus'}
         />
         <ButtonHome
-          onPress={() => navigation.navigate('Lotacao')}
+          onPress={() =>
+            navigation.navigate('ApiDataList', {
+              url: [
+                'http://www.poatransporte.com.br/php/facades/process.php?a=nc&p=%25&t=l',
+              ],
+              title: ['Linhas de Lotação'],
+            })
+          }
           title={'Linhas De Lotação'}
         />
       </ContentButton>
