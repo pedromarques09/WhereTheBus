@@ -1,8 +1,8 @@
-import React, {useEffect, useState} from 'react';
-import {FlatList} from 'react-native';
+import React, { useEffect, useState } from "react";
+import { FlatList } from "react-native";
 
-import Input from '../../components/Input';
-import ButtonBack from '../../components/ButtonBack';
+import Input from "../../components/Input";
+import ButtonBack from "../../components/ButtonBack";
 
 import {
   Container,
@@ -12,49 +12,52 @@ import {
   ContentInput,
   ContentFlatList,
   Header,
-} from './styles';
+} from "./styles";
+import { ApiDataListScreenProps } from "../../navigation/AppNavigator";
 
-import {useNavigation, useRoute} from '@react-navigation/native';
+type Line = {
+  id: string;
+  nome: string;
+  codigo: string;
+};
 
-const ApiDataList = () => {
-  const {
-    params: {url, title},
-  } = useRoute();
-  const [data, SetData] = useState<any>([]);
-  const [originalData, SetOriginalData] = useState<any>([]);
-  const navigation = useNavigation();
+function ApiDataList({ route, navigation }: ApiDataListScreenProps) {
+  const { url, title } = route.params;
+  const [data, SetData] = useState<Line[]>([]);
+  const [originalData, SetOriginalData] = useState<Line[]>([]);
 
   useEffect(() => {
     fetch(url, {
-      method: 'GET',
+      method: "GET",
       headers: {
-        Accept: 'application/json',
+        Accept: "application/json",
       },
     })
-      .then(response => response.json())
-      .then(data => {
+      .then((response) => response.json())
+      .then((data: Line[]) => {
         SetOriginalData(data);
         SetData(data);
       });
-  }, []);
+  }, [url]);
 
-  function Search(text: any) {
+  function Search(text: string) {
     let arr = JSON.parse(JSON.stringify(originalData));
     SetData(
       arr.filter(
-        (list: any) =>
+        (list: Line) =>
           list.nome.toLowerCase().includes(text.toLowerCase()) ||
-          list.codigo.toLowerCase().includes(text.toLowerCase()),
-      ),
+          list.codigo.toLowerCase().includes(text.toLowerCase())
+      )
     );
   }
 
-  function LineShow(item: any) {
+  function LineShow({ item }: { item: Line }) {
     return (
       <ContentFlatList
         onPress={() => {
-          navigation.navigate('LotacaoTracking', {id: item.id});
-        }}>
+          navigation.navigate("LotacaoTracking", { id: item.id });
+        }}
+      >
         <TextInfo>{item.nome}</TextInfo>
         <TextInfo>Codigo = {item.codigo}</TextInfo>
       </ContentFlatList>
@@ -72,18 +75,18 @@ const ApiDataList = () => {
           <Input
             placeholder="Nome ou Codigo da Linha"
             value={data}
-            onChangeText={(text: any) => Search(text)}
+            onChangeText={(text: string) => Search(text)}
           />
         </ContentInput>
         <FlatList
           data={data}
-          keyExtractor={item => item.id}
-          contentContainerStyle={{flexGrow: 1}}
-          renderItem={({item}) => LineShow(item)}
+          keyExtractor={(item) => item.id}
+          contentContainerStyle={{ flexGrow: 1 }}
+          renderItem={LineShow}
         />
       </Content>
     </Container>
   );
-};
+}
 
 export default ApiDataList;

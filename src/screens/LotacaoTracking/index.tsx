@@ -1,7 +1,7 @@
-import {useNavigation, useRoute} from '@react-navigation/core';
-import React, {useEffect, useState} from 'react';
-import {FlatList, Linking} from 'react-native';
-import ButtonBack from '../../components/ButtonBack';
+import React, { useEffect, useState } from "react";
+import { FlatList, Linking } from "react-native";
+import ButtonBack from "../../components/ButtonBack";
+import { LotacaoTrackingScreenProps } from "../../navigation/AppNavigator";
 
 import {
   Container,
@@ -10,59 +10,64 @@ import {
   Title,
   ContentFlatList,
   Header,
-} from './styles';
+} from "./styles";
 
-const LotacaoTracking = () => {
-  const navigation = useNavigation();
-  const {
-    params: {id},
-  } = useRoute();
-  const [tracking, setTracking] = useState();
+interface TrackingItem {
+  lat: number;
+  lng: number;
+}
+function LotacaoTracking({ route }: LotacaoTrackingScreenProps) {
+  const { id } = route.params;
+  const [tracking, setTracking] = useState<TrackingItem[]>([]);
 
-  const pegarItinerario = id => {
+  const pegarItinerario = (id: string) => {
     fetch(
       `http://www.poatransporte.com.br/php/facades/process.php?a=il&p=${id}`,
       {
-        method: 'GET',
+        method: "GET",
         headers: {
-          Accept: 'application/json',
+          Accept: "application/json",
         },
-      },
+      }
     )
-      .then(response => response.json())
-      .then(data => {
+      .then((response) => response.json())
+      .then((data) => {
         setTracking(
           Object.entries(data)
-            .map(track => {
+            .map((track) => {
               if (
-                track[0] != 'idlinha' &&
-                track[0] != 'nome' &&
-                track[0] != 'codigo'
+                track[0] !== "idlinha" &&
+                track[0] !== "nome" &&
+                track[0] !== "codigo"
               ) {
-                return track[1];
+                return {
+                  lat: track[1].lat,
+                  lng: track[1].lng,
+                };
               }
+              return null;
             })
-            .filter(Boolean),
+            .filter(Boolean) as TrackingItem[]
         );
       });
   };
-
   useEffect(() => {
     pegarItinerario(id);
   }, [id]);
 
-  function LineShow(item: any) {
+  const LineShow: React.FC<{ item: TrackingItem }> = ({ item }) => {
     return (
       <ContentFlatList
         onPress={() => {
           Linking.openURL(`geo:${item.lat},${item.lng}`);
-        }}>
+        }}
+      >
         <TextInfo>
           Rota ={item.lat}, {item.lng}
         </TextInfo>
       </ContentFlatList>
     );
-  }
+  };
 
   return (
     <Container>
@@ -73,12 +78,12 @@ const LotacaoTracking = () => {
         </Header>
         <FlatList
           data={tracking}
-          contentContainerStyle={{flexGrow: 1}}
-          renderItem={({item}) => LineShow(item)}
+          contentContainerStyle={{ flexGrow: 1 }}
+          renderItem={({ item }) => <LineShow item={item} />}
         />
       </Content>
     </Container>
   );
-};
+}
 
 export default LotacaoTracking;

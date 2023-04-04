@@ -1,27 +1,26 @@
-import styled from 'styled-components/native';
-import {TextInputMask} from 'react-native-masked-text';
+import { Dimensions } from "react-native";
+import styled from "styled-components/native";
+
+const { width } = Dimensions.get("window");
 
 export const Container = styled.View`
-  width: 220px;
-  height: 45px;
+  width: ${width * 0.7}px;
+  height: 40px;
   border-radius: 20px;
   background-color: #4e455410;
-  border: 1px;
+  border: 1px solid #000;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  padding: 0 10px;
 `;
 
 export const TextInput = styled.TextInput`
   font-weight: bold;
-  margin-left: 4px;
-  width: 80%;
+  margin-left: 10px;
+  flex: 1;
 `;
 
-export const MaskTextInput = styled(TextInputMask)`
-  font-weight: bold;
-  margin-left: 4px;
-`;
 export const Icon = styled.View`
   width: 45px;
   height: 45px;
