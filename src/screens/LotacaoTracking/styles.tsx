@@ -35,8 +35,7 @@ export const ContentFlatList = styled.TouchableOpacity`
   display: flex;
   background-color: #ffffff;
   padding: ${height * 0.01}px;
-  min-width: ${width * 0.8}px;
-  width: 98%;
+  width: ${width * 0.9}px;
   border-radius: 5px;
   border: ${width * 0.005}px;
   border-color: #283673;
