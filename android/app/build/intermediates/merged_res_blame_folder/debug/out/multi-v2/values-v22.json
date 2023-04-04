@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "/home/pedromarques/projetos/WheresTheBus/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-v22/values-v22.xml",
+            "outputFile": "/home/pedromarques/projetos dimed/WhereTheBus/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-v22/values-v22.xml",
             "map": [
                 {
-                    "source": "/home/pedromarques/.gradle/caches/transforms-3/69a29bf10bcc958f91385ad904e935b2/transformed/appcompat-1.3.0/res/values-v22/values-v22.xml",
+                    "source": "/home/pedromarques/.gradle/caches/transforms-3/c6c9015e9fe899977d9c191fce5a4a09/transformed/appcompat-1.3.1/res/values-v22/values-v22.xml",
                     "from": {
                         "startLines": "2,3,4,9",
                         "startColumns": "4,4,4,4",

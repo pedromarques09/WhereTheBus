@@ -12,13 +12,13 @@ import java.util.Arrays;
 import java.util.ArrayList;
 
 // react-native-gesture-handler
-import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
+import com.swmansion.gesturehandler.RNGestureHandlerPackage;
+// react-native-navigation
+import com.reactnativenavigation.react.NavigationPackage;
 // react-native-safe-area-context
 import com.th3rdwave.safeareacontext.SafeAreaContextPackage;
 // react-native-screens
 import com.swmansion.rnscreens.RNScreensPackage;
-// react-native-svg
-import com.horcrux.svg.SvgPackage;
 
 public class PackageList {
   private Application application;
@@ -65,9 +65,9 @@ public class PackageList {
     return new ArrayList<>(Arrays.<ReactPackage>asList(
       new MainReactPackage(mConfig),
       new RNGestureHandlerPackage(),
+      new NavigationPackage(reactNativeHost),
       new SafeAreaContextPackage(),
-      new RNScreensPackage(),
-      new SvgPackage()
+      new RNScreensPackage()
     ));
   }
 }
